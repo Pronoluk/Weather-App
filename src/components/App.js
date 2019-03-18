@@ -4,6 +4,8 @@ import Result from './Result';
 
 import './App.css';
 
+const APIKey = '817f4d3116a83865d3692250c52719b7';
+
 class App extends Component {
 
   state = {
@@ -16,7 +18,7 @@ class App extends Component {
     pressure: '',
     wind: '',
     err: '',
-  };
+  }
 
   handleInputChange = (e) => {
     this.setState({
@@ -25,12 +27,25 @@ class App extends Component {
   }
 
   handleCitySubmit = (e) => {
-    e.preventDefault();
-    console.log("form confirmed");
+    e.preventDefault()
 
-    const API = `api.openweathermap.org/data/2.5/weather?q=${this.state.value}&APPID=817f4d3116a83865d3692250c52719b7`;
+    const API = `http://api.openweathermap.org/data/2.5/weather?q=${this.state.value}&APPID=${APIKey}`;
 
-  };
+    fetch(API)
+    .then(response => {
+      if(response.ok) {
+        return response
+      }
+      throw Error("Something went wrong...")
+    })
+    .then(response => response.json())
+    
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+
+    
+
+  }
 
   render() {
     return (
